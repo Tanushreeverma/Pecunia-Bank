@@ -1,0 +1,85 @@
+
+<div class="main-div">
+    <button class="btn btn-dark" (click)="goHome()"><span (click)="goHome()" class="glyphicon glyphicon-arrow-left"></span></button>
+    <div class="mid-div">
+        <nav class="well navbar">
+            <h1>
+               Show
+            </h1>
+            <p>To show the details of all accounts</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="search">
+                        <br>
+                        <input type="text" class="form-control input-lg" name="Search" placeholder="Search....." [(ngModel)]="searchText">
+                    </div>
+                </div>   
+            </div> 
+        </nav>
+        
+        <mat-tab-group mat-stretch-tabs>
+            <mat-tab label="Accounts Info">
+                <div  class="scroll-vertical my-custom-scrollbar">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let column of headers">
+                                    {{column}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of data | filter:searchText">
+                                <td *ngFor="let column of keys">
+                                     {{item[column]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>    
+            </mat-tab>
+
+            <mat-tab label="Customers Info">
+                <div  class="scroll-vertical my-custom-scrollbar">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let column of customerHeaders ">
+                                    {{column}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of data | filter:searchText">
+                                <td *ngFor="let column of customerKeys">
+                                    {{item.customerDetails[column]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </mat-tab>
+            <mat-tab label="Address Info">
+                <div  class="scroll-vertical my-custom-scrollbar">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th *ngFor="let column of addressHeaders">
+                                    {{column}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of data | filter:searchText">
+                                <td *ngFor="let column of addressKeys">
+                                    {{item.customerDetails.address[column]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>    
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

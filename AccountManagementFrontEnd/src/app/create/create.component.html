@@ -1,0 +1,173 @@
+<button class="btn btn-dark" (click)="goHome()"><span (click)="goHome()" class="glyphicon glyphicon-arrow-left"></span></button>
+<div class="container">
+    <div class="row">
+        <h1>Create</h1>
+        <p>Please fill this form to create an account</p>
+    </div>
+    <br>
+   <form #userForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>First Name</label>
+                <input type="text" required #name="ngModel"  [class.is-invalid]="name.invalid && name.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="First Name" name="userName" [(ngModel)]="userModel.customerFirstName">
+                <div *ngIf="name.errors && (name.invalid && name.touched)">
+                    <small class="text-danger" *ngIf="name.errors.required">First name is required</small>
+                    <small class="text-danger" *ngIf="name.errors.pattern">Name should only contain alphabets</small>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>Last Name</label>
+                <input type="text" required #lname="ngModel"  [class.is-invalid]="lname.invalid && lname.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="Last Name" name="userLastName" [(ngModel)]="userModel.customerLastName">
+                <div *ngIf="lname.errors && (lname.invalid && lname.touched)">
+                    <small class="text-danger" *ngIf="lname.errors.required">Last Name is required</small>
+                    <small class="text-danger" *ngIf="lname.errors.pattern">Name should only contain alphabets</small>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Date of birth</label>
+                <input type="date" [ngClass]="getAge(dob.value)" required #dob="ngModel" [class.is-invalid]="dob.invalid && dob.touched" class="form-control" value="01/01/2000" name="userDob" [(ngModel)]="userModel.dob">
+                <small class="text-danger" [class.d-none]="dob.valid || dob.untouched" >Date of birth is required</small>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Age</label>
+                <input type="text" [disabled]=true required #age="ngModel" [class.is-invalid]="age.invalid && age.touched" class="form-control" [value]="userModel.age" name="userAge" [(ngModel)]="userModel.age">
+                <small class="text-danger" [class.d-none]="age.valid || age.untouched" >Age is required</small>
+            </div>
+            <div class="form-group col-md-4">
+                <label>Gender</label>
+                <select class="form-control " name="userGender" [(ngModel)]="userModel.gender">
+                <option value='' disabled selected hidden>Gender</option>
+                <option value='Male'>Male</option>
+                <option value='Female'>Female</option>
+                <option value='Transgender'>Transgender</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <label>Street</label>
+                <input type="text" required #one="ngModel" [class.is-invalid]="one.invalid && one.touched" class="form-control" placeholder="Address Line 1" name="userAddressOne" [(ngModel)]="userModel.address.street">
+                <small class="text-danger" [class.d-none]="one.valid||one.untouched">Address is required</small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>City</label>
+                <input type="text" required #city="ngModel" [class.is-invalid]="city.invalid && city.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="City" name="userCity" [(ngModel)]="userModel.address.city">
+                <div *ngIf="city.errors && (city.invalid && city.touched)">
+                    <small class="text-danger" *ngIf="city.errors.required">City is required</small>
+                    <small class="text-danger" *ngIf="city.errors.pattern">City should only contain alphabets</small>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>State</label>
+                <input type="text" required #state="ngModel" [class.is-invalid]="state.invalid && state.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="State" name="userState" [(ngModel)]="userModel.address.state">
+                <div *ngIf="state.errors && (state.invalid && state.touched)">
+                    <small class="text-danger" *ngIf="state.errors.required">State is required</small>
+                    <small class="text-danger" *ngIf="state.errors.pattern">State should only contain alphabets</small>
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Zipcode</label>
+                <input type="text" required #zip="ngModel" pattern="^[1-9][0-9]{5}$" [class.is-invalid]="zip.invalid && zip.touched" class="form-control" placeholder="ZipCode" name="userZip" [(ngModel)]="userModel.address.zipCode">
+                <div *ngIf="zip.errors && (zip.invalid && zip.touched) ">
+                <small class="text-danger" *ngIf="zip.errors.required">ZipCode is required</small>
+                <small class="text-danger" *ngIf="zip.errors.pattern">ZipCode must be of 6 digits and should not start with a zero</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Adhaar Number</label>
+                <input type="text" required #adhaar="ngModel" (keyup)="checkAdhaar(adhaar.value)" (blur)="checkAdhaar(adhaar.value)" pattern="^\d{12}$" [class.is-invalid]="adhaar.invalid && adhaar.touched" class="form-control" placeholder="Adhaar Number" name="userAdhaar" [(ngModel)]="userModel.adhaarNumber">
+                <div *ngIf="adhaar.errors && (adhaar.invalid && adhaar.touched)">
+                    <small class="text-danger" *ngIf="adhaar.errors.required">Adhaar Number is required</small>
+                    <small class="text-danger" *ngIf="adhaar.errors.pattern">Adhaar Number must be of 12 Digits</small>
+                </div>
+                <div class="my-div" *ngIf=isPresent>
+                    <small class="text-danger">Adhaar is already present</small>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                    <label>Pan Number</label>
+                    <input type="text" required #pan="ngModel" (keyup)="checkPan(pan.value)" (blur)="checkPan(pan.value)" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" [class.is-invalid]="pan.invalid && pan.touched" class="form-control" placeholder="Pan Number (For e.g-QWERT0987M)" name="userPan" [(ngModel)]="userModel.panNumber">
+                    <div *ngIf="pan.errors && (pan.invalid && pan.touched)">
+                        <small class="text-danger" *ngIf="pan.errors.required">Pan Number is required</small>
+                        <small class="text-danger" *ngIf="pan.errors.pattern">Pan Number must be be in PAN format</small>
+                    </div>
+                    <div class="my-div" *ngIf=isPanPresent>
+                        <small class="text-danger">Pan is akready present</small>
+                    </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                <label>Branch Id</label>
+                <select class="form-control" name="userBranch" [(ngModel)]="userModel.branchId">
+                    <option value='' disabled selected hidden>Branch Id</option>
+                    <option value='118001'>118001</option>
+                    <option value='118002'>118002</option>
+                    <option value='118003'>118003</option>
+                    <option value='118004'>118004</option>
+                    <option value='118005'>118005</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Phone Number</label>
+                <input type="text" required #phone="ngModel" pattern="^\d{10}$" [class.is-invalid]="phone.invalid && phone.touched" class="form-control" placeholder="Phone Number" name="userContact" [(ngModel)]="userModel.contactNumber">
+                <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+                    <small class="text-danger" *ngIf="phone.errors.required">Phone Number is required</small>
+                    <small class="text-danger" *ngIf="phone.errors.pattern">Phone Number must be of 10 Digits</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label>Account Type</label>
+                <select #accountType class="form-control" name="accountType" [(ngModel)]="userModel.accountType">
+                    <option value='' disabled selected hidden>Choose Account Type</option>
+                    <option value='Current'>Current</option>
+                    <option value='Savings'>Savings</option>
+                </select>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Credit Score</label>
+                <input type="text" required #score="ngModel" [class.is-invalid]="score.invalid && score.touched" class="form-control" pattern="([3-8][0-9]{2}|900)" placeholder="Credit Score" name="userScore" [(ngModel)]="userModel.creditScore">
+                <div *ngIf="score.errors && (score.invalid && score.touched)">
+                    <small class="text-danger" *ngIf="score.errors.required"  >Credit Score is required</small>
+                    <small class="text-danger" *ngIf="score.errors.pattern">Credit score should be between 300 and 900</small>
+            </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                <label>Opening Balance</label>
+                <input type="text" required #balance="ngModel" pattern="^[1-9][0-9]*$" [class.is-invalid]="balance.invalid && balance.touched" class="form-control" placeholder="Opening Balance" name="userBalance" [(ngModel)]="userModel.openingBalance">
+                <div *ngIf="balance.errors && (balance.invalid && balance.touched)">
+                    <small class="text-danger" *ngIf="balance.errors.required">Opening balance is required</small>
+                    <small class="text-danger" *ngIf="balance.errors.pattern">Opening balance should be greater than zero</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-md-6">
+                <button [disabled]="userForm.form.invalid" class="btn btn-primary">
+                Submit
+                </button>
+            </div>
+        </div>
+   </form>
+</div>

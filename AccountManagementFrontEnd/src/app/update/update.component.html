@@ -1,0 +1,178 @@
+<div class="main-div">
+    <button class="btn btn-dark" (click)="goHome()"><span (click)="goHome()" class="glyphicon glyphicon-arrow-left"></span></button>
+
+    <div class="mid-div">
+        <nav class="well navbar">
+            <h1>Update</h1>
+            <p>To update an existing account</p>
+        </nav>
+
+        <div class="well container">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <br>
+                    <label>Enter Account Number</label>
+                    <input type="text" class="form-control" (keyup)="find(account.value)" (blur)="find(account.value)" required #account="ngModel" [class.is-invalid]="account.invalid && account.touched" pattern="^[0-9]{10}$" placeholder="Account Number" name="accountNumber" [(ngModel)]="nameModel.accountNumber">
+                    <div *ngIf="account.errors && (account.invalid && account.touched)">
+                        <small class="text-danger" *ngIf= "account.errors.required">Account number is required</small>
+                        <small class="text-danger" *ngIf= "account.errors.pattern">Please mention 10 digit Account Number</small>            
+                    </div>
+                    <div *ngIf="account.valid">
+                        <small class="text-danger">{{error.data}}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="existing" *ngIf="showExisting">
+                 <div class="form-row">
+                     <div class="col-md-6">
+                        <br>
+                        <label>Existing Name</label>
+                        <input type="text" class="form-control" [disabled]=true value={{userAccount.accountHolderName}}>
+                    </div>
+                    <div class="col-md-6">
+                        <br>
+                        <label>Existing Contact Number</label>
+                        <input type="text" class="form-control" [disabled]=true value={{userAccount.contactNumber}}>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <br>
+                        <label>Existing street</label>
+                        <input type='text' class="form-control" [disabled]=true value={{userAccount.address.street}}>
+                    </div>
+                </div>   
+                <div class="form-row">
+                    <div class="col-md-4">
+                        <br>
+                        <label>Existing City</label>
+                        <input type="text" class="form-control" [disabled]=true value={{userAccount.address.city}}>
+                    </div>
+                    <div class="col-md-4">
+                        <br>
+                        <label>Existing State</label>
+                        <input type="text" class="form-control" [disabled]=true value={{userAccount.address.state}}>
+                    </div>
+                    <div class="col-md-4">
+                        <br>
+                        <label>Existing Zipcode</label>
+                        <input type="text" class="form-control" [disabled]=true value={{userAccount.address.zipCode}}>
+                    </div>
+                </div>  
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <br>
+                    <label>Choose to update</label>
+                    <select #update class="form-control" (change)="getUpdatedView(update.value)" [disabled]="!showExisting" data-toggle="tooltip" data-placement="left" title="Enter Account number to access" name="userSelect" ngModel>
+
+                        <option value='' disabled selected hidden>Choose to update</option>
+                        <option value='Name'>Name</option>
+                        <option value='Contact Number'>Contact Number</option>
+                        <option value='Address'>Address</option>
+                    </select>
+                </div>
+            </div>
+            <div class="items">
+                <form #change="ngForm">
+                    <div class="my-div" *ngIf="nameValue">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <br>
+                                <label>First Name</label>
+                                <input type="text" required class="form-control" #name="ngModel" [class.is-invalid]="name.invalid && name.touched" pattern="[a-zA-Z]*" placeholder="New First Name" name="userName" [(ngModel)]="nameModel.firstName">
+                                <div *ngIf="name.errors && (name.invalid && name.touched)">
+                                    <small class="text-danger" *ngIf="name.errors.required">First name is required</small>
+                                    <small class="text-danger" *ngIf="name.errors.pattern">Name should only contain alphabets</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <br>
+                                <label>Last Name</label>
+                                <input type="text" required class="form-control" #lname="ngModel" placeholder="New Last Name" [class.is-invalid]="lname.invalid && lname.touched" pattern="[a-zA-Z]*" name="userLastName" [(ngModel)]="nameModel.lastName">
+                                <div *ngIf="lname.errors && (lname.invalid && lname.touched)">
+                                    <small class="text-danger" *ngIf="lname.errors.required">Last Name is required</small>
+                                    <small class="text-danger" *ngIf="lname.errors.pattern">Name should only contain alphabets</small>
+                                </div>                           
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <br>
+                                <button class="btn btn-primary" [disabled]="change.form.invalid" (click)="onSubmit()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-div" *ngIf="contactValue">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <br>
+                                <label>Contact Number</label>
+                                <input type="text" required #phone="ngModel" pattern="^\d{10}$" [class.is-invalid]="phone.invalid && phone.touched" class="form-control" placeholder="New Contact Number" name="userContact" [(ngModel)]="mobileModel.mobileNumber">
+                                <div *ngIf="phone.errors && (phone.invalid && phone.touched)">
+                                    <small class="text-danger" *ngIf="phone.errors.required">Phone Number is required</small>
+                                    <small class="text-danger" *ngIf="phone.errors.pattern">Phone Number must be of 10 Digits</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <br>
+                                <button class="btn btn-primary" [disabled]="change.form.invalid" (click)="onSubmit()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-div" *ngIf=addressValue>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <br>
+                                <label>Street</label>
+                                <input type="text" required #one="ngModel" [class.is-invalid]="one.invalid && one.touched" class="form-control" placeholder="New Address Line 1" name="userAddressOne" [(ngModel)]="addressModel.address.street">
+                                <small class="text-danger" [class.d-none]="one.valid||one.untouched">Address is required</small>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <br>
+                                <label>City</label>
+                                <input type="text" required #city="ngModel" [class.is-invalid]="city.invalid && city.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="New City" name="userCity" [(ngModel)]="addressModel.address.city">
+                                <div *ngIf="city.errors && (city.invalid && city.touched)">
+                                  <small class="text-danger" *ngIf="city.errors.required">City is required</small>
+                                  <small class="text-danger" *ngIf="city.errors.pattern">City should only contain alphabets</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <br>
+                                <label>State</label>
+                                <input type="text" required #state="ngModel" [class.is-invalid]="state.invalid && state.touched" pattern="[a-zA-Z ]*" class="form-control" placeholder="New State" name="userState" [(ngModel)]="addressModel.address.state">
+                                <div *ngIf="state.errors && (state.invalid && state.touched)">
+                                    <small class="text-danger" *ngIf="state.errors.required">State is required</small>
+                                    <small class="text-danger" *ngIf="state.errors.pattern">State should only contain alphabets</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <br>
+                                <label>Zipcode</label>
+                                <input type="text" required #zip="ngModel" pattern="^[1-9][0-9]{5}$" [class.is-invalid]="zip.invalid && zip.touched" class="form-control" placeholder="New ZipCode" name="userZip" [(ngModel)]="addressModel.address.zipCode">
+                                <div *ngIf="zip.errors && (zip.invalid && zip.touched) ">
+                                    <small class="text-danger" *ngIf="zip.errors.required">ZipCode is required</small>
+                                    <small class="text-danger" *ngIf="zip.errors.pattern">ZipCode must be of 6 digits and should not start with a zero</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <br>
+                                <button class="btn btn-primary" [disabled]="change.form.invalid" (click)="onSubmit()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div> 
+
